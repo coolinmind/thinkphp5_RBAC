@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>{$title}- 后台系统</title>
+    {css href="_admin_/css/layui.css"}
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    {include file="public/header"/}
+    {include file="public/left"/}
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <div class="layui-btn-group">
+                <a class="layui-btn layui-bg-orange" href="{:url('/authGroup/add')}" data-type="getCheckData">添加用户组</a>
+            </div>
+            <table lay-filter="table" class="layui-table" id="table"></table>
+        </div>
+    </div>
+    {include file="public/footer"/}
+
+</div>
+{js href="_admin_/layui.all.js"}
+{js href="_admin_/jquery.js"}
+<script type="text/html" id="status">
+    {{# if(d.status == 1){ }}
+    <span class="layui-badge layui-bg-green">开启中</span>
+    {{# }else { }}
+    <span class="layui-badge layui-bg-orange">关闭中</span>
+    {{# } }}
+</script>
+
+<script type="text/html" id="group">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" href="/authGroup/edit?id={{d.id}}">查看</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.use(['layer','table'], function() {
+        var table = layui.table;
+        //列表
+        table.render({
+            elem: '#table',
+            page:true,
+            url:"{:url('/authGroup/data')}",
+            cols: [[
+                {field:'id', title:'ID', width: 100}
+                ,{field:'title', title:'用户组名称', width:200}
+                ,{field:'status', title:'状态', width:200 ,toolbar: '#status'}
+                ,{field:'create_time', title:'时间', width:200 }
+                ,{fixed: 'right', width:200, align:'center', title:'操作', toolbar: '#group'}
+            ]]
+        });
+
+        ///监听工具条
+        table.on('tool(table)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del') {
+                layer.confirm('真的删除行么', function(index){
+                    obj.del();
+                    layer.close(index);
+                    $.ajax({
+                        dataType : 'json',
+                        type : 'POST',
+                        url : "{:url('/authGroup/del')}",
+                        data : {'id':data.id},
+                        success : function(result){
+                            layer.msg(result.msg);
+                        },
+                        error : function(result){
+                            layer.msg(result.msg)
+                        }
+                    });
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

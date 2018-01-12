@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>{$title}- 后台系统</title>
+    {css href="_admin_/css/layui.css"}
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    {include file="public/header"/}
+    {include file="public/left"/}
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">内容主体区域
+            <div class="layui-btn-group demoTable">
+                <button class="layui-btn" data-type="getCheckData">获取选中行数据</button>
+                <button class="layui-btn" data-type="getCheckLength">获取选中数目</button>
+                <button class="layui-btn" data-type="isAll">验证是否全选</button>
+            </div>
+            <table class="layui-table" lay-data="{width: 'auto', 
+                                                height:'auto',
+                                                url:'{:url('./test')}',
+                                                 page:true, id:'idTest'}" lay-filter="demo">
+                 <thead>
+                    <tr>
+                      <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
+                      <th lay-data="{field:'id', width:'80', sort: true, fixed: true}">ID</th>
+                      <th lay-data="{field:'name', width:'123'}">用户名</th>
+                      <th lay-data="{field: 'password', width:'123', align:'center'}">密码</th>
+                      <th lay-data="{ fixed: 'right',width:'auto', toolbar: '#barDemo'}">操作</th>
+                    </tr>
+                  </thead>
+            </table>
+        </div>
+    </div>
+    {include file="public/footer"/}
+
+</div>
+{js href="_admin_/layui.js"}
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+  <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.use('table', function(){
+      var table = layui.table;
+
+      ///监听工具条
+      table.on('tool(demo)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'detail'){
+            layer.msg('ID：'+ data.id + ' 的查看操作');
+            $(this).attr("href","edit/id/"+data.id);
+        } else if(obj.event === 'del'){
+          layer.confirm('真的删除行么', function(index){
+            obj.del();
+            layer.close(index);
+            $.ajax({
+                dataType : 'json',
+                type : 'POST',
+                url : "{:url('/index/del')}",
+                data : {'id':data.id},
+                success : function(result){
+                    if(result.code == '200'){
+                        layer.msg(result.msg)
+                    }
+                },
+                error : function(){
+                    layer.msg(result.msg)
+                }
+            });
+          });
+        } else if(obj.event === 'edit'){
+          // layer.alert('编辑行：<br>'+ JSON.stringify(data))
+        }
+      });
+
+      $('.demoTable .layui-btn').on('click', function(){
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+      });
+    });
+</script>
+</body>
+</html>

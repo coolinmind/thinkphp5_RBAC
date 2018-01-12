@@ -1,0 +1,20 @@
+<div class="layui-side layui-bg-black" >
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                {foreach :session('auth_list','','admin') as $k=>$v}
+                    <li class="layui-nav-item layui-nav-itemed">
+                        {if $v['level'] == 0 }
+                        <a class="" href="javascript:;">{$v.title}<span class="layui-nav-more"></span></a>
+                        {/if}
+                    {foreach :session('list','','admin') as $k1=>$v1}
+                        {if $v1.pid eq $v.id}
+                        <dl class="layui-nav-child">
+                            <dd><a href="">{:$v1.title}</a></dd>
+                        </dl>
+                        {/if}
+                    {/foreach}
+                    </li>
+                {/foreach}
+            </ul>
+        </div>
+    </div>
