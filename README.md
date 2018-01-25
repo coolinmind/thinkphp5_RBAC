@@ -1,6 +1,8 @@
 ThinkPHP 5.0 && Layui && 后台权限控制
 ===============
 
+在项目根目录执行：composer update
+
 后台账号：admin
 密码：123123
 
