@@ -9,9 +9,10 @@
                     {foreach :session('list','','admin') as $k1=>$v1}
                         {if $v1.pid eq $v.id}
                         <dl class="layui-nav-child">
-                            <dd><a href="">{:$v1.title}</a></dd>
+                            <dd><a href="<?php echo ('../'.$v1['name']);?>">{:$v1.title}</a></dd>
                         </dl>
                         {/if}
+                        
                     {/foreach}
                     </li>
                 {/foreach}
