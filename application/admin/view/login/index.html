@@ -6,32 +6,47 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     {css href="_admin_/css/layui.css"}
-    {css href="_admin_/login.css"}
-    {css href="_admin_/admin.css"}
+    <style>
+        div{
+            text-align: center;
+        }
+        div.layui-container {
+            padding-top: 100px;
+        }
+        form {
+            margin-left: 15%;
+            margin-right: 15%;
+            padding: 20px;
+            padding-top: 0;
+            border: 1px solid #DDD;
+            border-top: none;
+            border-radius: 10px;
+        }
+    </style>
+    <!-- {css href="_admin_/admin.css"} -->
 </head>
 <body class="layui-layout-body">
-    <form action="{:url('./login/login')}"  method="post">
-    <div class="login">
-        <h1>后台管理模板系统</h1>
-        <form class="layui-form">
-            <div class="layui-form-item">
-                <input class="layui-input" name="username" placeholder="用户名" lay-verify="required" type="text" autocomplete="off">
+<div class="layui-container">
+    <form class="layui-form layui-form-pane" action="{:url('./login/login')}" method="post">
+        <input type="hidden" name="__token__" value="791bf31d8ade8f7f0c1eb6ae856ce76f">        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+            <legend>后台管理模板系统</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" lay-verify="required" placeholder="输入用户名" autocomplete="off" class="layui-input">
             </div>
-            <div class="layui-form-item">
-                <input class="layui-input" name="password" placeholder="密码" lay-verify="required" type="password" autocomplete="off">
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="password" lay-verify="required" placeholder="输入密码" autocomplete="off" class="layui-input">
             </div>
-            <!-- <div class="layui-form-item form_code">
-                <input class="layui-input" name="code" placeholder="验证码" lay-verify="required" type="text" autocomplete="off">
-                <div class="code"><img src="../../images/code.jpg" width="116" height="36"></div>
-            </div> -->
-            <button class="layui-btn login_btn" lay-submit="" lay-filter="login">登录</button>
-        </form>
-    </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn" lay-submit="">登陆</button>
+        </div>
     </form>
-    <!-- <div class="layui-trans layadmin-user-login-footer">
-        <p>© 2018 <a href="http://www.admin.com/" target="_blank">admin</a></p>
-        <p><span><a href="http://www.admin.com" target="_blank">前往官网</a></span></p>
-    </div> -->
 </div>
 </body>
 <!--{js href="_admin_/layui.all.js"}
