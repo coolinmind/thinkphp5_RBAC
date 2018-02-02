@@ -10,6 +10,7 @@ namespace app\admin\controller;
 
 use app\admin\validate\Admin as AdminValidate;
 use app\admin\model\Admin as AdminModel;
+use app\admin\model\AuthGroup;
 
 class Admin extends Base
 {
@@ -55,7 +56,12 @@ class Admin extends Base
         $model = new AdminModel();
         $result = $model->where(['id'=>input('id')])->find();
         $title = '修改';
-        return view('admin/edit', compact('result', 'title'));
+        $group = db('auth_group_access')->alias('a')
+            ->join('auth_group', 'a.group_id=auth_group.id', 'left')
+            ->where(['uid'=>input('id')])->value('auth_group.title');
+        $model = new AuthGroup();
+        $res = $model->where('status', 1)->select();
+        return view('admin/edit', compact('result', 'title', 'res', 'group'));
     }
 
     public function add()
@@ -78,6 +84,8 @@ class Admin extends Base
 
                 $data['id'] = $post['id'];
                 $model->isUpdate(true)->save($data);
+                $gid = request()->post('gid');
+                db('auth_group_access')->where(['uid'=>$data['id']])->update(['group_id'=>$gid]);
 
                 $this->success('更新成功', url('/admin/index'));
             } else {
@@ -86,15 +94,20 @@ class Admin extends Base
                 }
 
                 $model->save($data);
+                $gid = request()->post('gid');
+                db('auth_group_access')->insert(['uid'=>$model->id , 'group_id'=>$gid]);
 
                 $this->success('添加成功', url('/admin/index'));
             }
 
-            $this->error('添加或更新失败', url('/admin/index'));
+            $this->error('操作失败', url('/admin/index'));
         }
 
         $title = '添加页面';
-        return view('admin/create', compact('title'));
+        $group = new AuthGroup();
+        $res = $group->where('status', 1)->select();
+
+        return view('admin/create', compact('title', 'res'));
     }
 
     public function del()

@@ -33,6 +33,17 @@
             </div>
           </div>
           <div class="layui-form-item">
+            <label class="layui-form-label">用户组</label>
+            <div class="layui-input-block">
+              <select name="gid" lay-verify="">
+                <option>请选择一个用户组</option>
+                {foreach $res as $k => $v}
+                <option value="{:$v->id}">{:$v->title}</option>
+                {/foreach}
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
             <div class="layui-input-block">
               <button class="layui-btn" type="submit" lay-submit="" lay-filter="demo1">立即提交</button>
               <button type="reset" class="layui-btn layui-btn-primary">重置</button>
