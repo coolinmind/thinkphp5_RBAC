@@ -55,9 +55,7 @@ class AuthGroup extends Base
             $post = request()->post();
 
             $data['title'] = $post['title'];
-            if (array_key_exists('status', $post)) {
-                $data['status'] = $post['status'];
-            }
+            $data['status'] = array_key_exists('status', $post) == 'on' ? 1 : 0;
             $data['rules'] = implode(',', $post['rules']);
 
             $validate = new AuthGroupValidate();
@@ -67,8 +65,7 @@ class AuthGroup extends Base
                 if (!$validate->scene('edit')->check($data)) {
                     $this->error($validate->getError(), url('/authGroup/index'));
                 }
-                $data['id'] = $post['id'];
-                $model->isUpdate($data)->save($data);
+                $model->where(['id'=>$post['id']])->update($data);
 
                 $this->success('更新成功', url('/authGroup/index'));
             } else {

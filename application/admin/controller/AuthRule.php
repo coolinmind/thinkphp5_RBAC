@@ -43,14 +43,10 @@ class AuthRule extends Base
     {
         if (request()->isPost()) {
             $post = request()->post();
+
             $data['name'] = $post['name'];
             $data['title'] = $post['title'];
-
-            if (array_key_exists('status', $post)) {
-                $data['status'] = $post['status'] === 'on' ? 1 : 0;
-            } else {
-                $data['status'] =  0;
-            }
+            $data['status'] = array_key_exists('status', $post) == 'on' ? 1 : 0;
 
             $validate = new AuthRuleValidate();
             $model = new AuthRuleModel();
