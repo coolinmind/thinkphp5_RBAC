@@ -1,6 +1,9 @@
 <div class="layui-side layui-bg-black" >
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">12</a>
+                </li>
                 {foreach :session('auth_list','','admin') as $k=>$v}
                     <li class="layui-nav-item layui-nav-itemed">
                         {if $v['level'] == 0 }
@@ -12,7 +15,6 @@
                             <dd><a href="<?php echo ('../'.$v1['name']);?>">{:$v1.title}</a></dd>
                         </dl>
                         {/if}
-                        
                     {/foreach}
                     </li>
                 {/foreach}

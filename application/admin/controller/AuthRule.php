@@ -36,7 +36,8 @@ class AuthRule extends Base
         $model = new AuthRuleModel();
         $result = $model->where(['id'=>input('id')])->find();
         $title = '修改';
-        return view('auth_rule/edit', compact('result', 'title'));
+        $res = $model->where('status', 1)->select();
+        return view('auth_rule/edit', compact('result', 'title', 'res'));
     }
 
     public function add()
@@ -50,18 +51,22 @@ class AuthRule extends Base
 
             $validate = new AuthRuleValidate();
             $model = new AuthRuleModel();
+            //查询pid
+            $value = $model->where('id', $post['rid'])->value('level');
+            $level = $value == null ? 0 : 1;
             if (array_key_exists('id', $post)) {
                 if (!$validate->scene('edit')->check($data)) {
                     $this->error($validate->getError(), url('/authRule/index'));
                 }
 
-                $model->where(['id'=>$post['id']])->update($data);
+                $model->where(['id'=>$post['id'],'level'=>$level+1])->update($data);
                 $this->success('更新成功', url('/authRule/index'));
             } else {
                 if (!$validate->scene('add')->check($data)) {
                     $this->error($validate->getError(), url('/authRule/index'));
                 }
 
+                $data['pid'] = $level+1;
                 $model->insert($data);
                 $this->success('添加成功', url('/authRule/index'));
             }
