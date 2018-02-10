@@ -22,6 +22,18 @@
         </fieldset>
         <form class="layui-form" action="{:url('/authRule/add')}" method="post">
           <div class="layui-form-item">
+            <label class="layui-form-label">上级权限</label>
+            <div class="layui-input-block">
+              <select name="rid" lay-verify="required">
+                <option value="0">顶级权限</option>
+                {foreach $res as $index}
+                <option value="{:$index->id}"><?php if($index->level!=0){echo '|';} echo str_repeat('—', $index->level*3)?>{:$index->title}</option>
+                {/foreach}
+              </select>
+            </div>
+          </div>
+
+          <div class="layui-form-item">
             <label class="layui-form-label">权限名称</label>
             <div class="layui-input-block">
               <input type="text" name="title" lay-verify="title" autocomplete="on" placeholder="请输入权限名" class="layui-input" value="">

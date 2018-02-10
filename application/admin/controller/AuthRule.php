@@ -59,7 +59,10 @@ class AuthRule extends Base
                     $this->error($validate->getError(), url('/authRule/index'));
                 }
 
-                $model->where(['id'=>$post['id'],'level'=>$level+1])->update($data);
+                $data['pid'] = $post['rid'];
+                $data['level'] = $level+1;
+                $model->where(['id'=>$post['id']])->update($data);
+//
                 $this->success('更新成功', url('/authRule/index'));
             } else {
                 if (!$validate->scene('add')->check($data)) {
@@ -73,7 +76,9 @@ class AuthRule extends Base
             $this->error('添加或更新失败', url('/authRule/index'));
         }
         $title = '添加页面';
-        return view('auth_rule/create', compact('title'));
+        $model = new \app\admin\model\AuthRule();
+        $res =  $model->select();
+        return view('auth_rule/create', compact('title', 'res'));
     }
 
     public function del()

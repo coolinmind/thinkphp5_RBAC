@@ -84,8 +84,9 @@ class AuthGroup extends Base
         $model = new AuthGroupModel();
         $res = $model->rule()->where(['status'=>1])->select();
         $res = $model->recursive($res);
+        $all = $model->select();
 
-        return view('auth_group/create', compact('title', 'res'));
+        return view('auth_group/create', compact('title', 'res', 'all'));
     }
 
     public function del()

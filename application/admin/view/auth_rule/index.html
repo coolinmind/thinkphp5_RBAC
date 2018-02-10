@@ -64,7 +64,7 @@
                     $.ajax({
                         dataType : 'json',
                         type : 'POST',
-                        url : "{:url('/admin/del')}",
+                        url : "{:url('/authRule/del')}",
                         data : {'id':data.id},
                         success : function(result){
                             layer.msg(result.msg);
