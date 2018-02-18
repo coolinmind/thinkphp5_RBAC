@@ -43,8 +43,8 @@ class AuthGroup extends Base
         $result->rules = explode(',', $result->rules);
 
         $model = new AuthGroupModel();
-        $res = $model->rule()->where(['status'=>1])->select();
-        $res = $model->recursive($res);
+        $res = $model->rule()->where(['status'=>1])->order('level', 'esc')->select();
+//        $res = $model->recursive($res);
 
         return view('auth_group/edit', compact('result', 'rules', 'title', 'res'));
     }
