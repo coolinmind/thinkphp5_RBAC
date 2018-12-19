@@ -39,17 +39,16 @@ class Admin extends Base
         $page = input('page') ? : '1';
         $limit = input('limit') ? : '10';
         $model = new AdminModel();
-        $data = $model->order('id', 'desc')->page($page, $limit)->select();
+        $data = $model->alias('a')
+                ->join('auth_group_access', 'auth_group_access.uid=a.id', 'left')
+                ->join('auth_group', 'auth_group_access.group_id=auth_group.id', 'left')
+                ->page($page, $limit)
+                ->field(['a.id', 'auth_group.title', 'a.create_time', 'a.name'])
+                ->select();
         $count = $model->all();
         $result = $this->jump('success', '0', $data, $count);
         return $result;
     }
-
-    /*public function getAdd()
-    {
-        $title = '添加页面';
-        return view('admin/create', compact('title'));
-    }*/
 
     public function edit()
     {
@@ -59,6 +58,7 @@ class Admin extends Base
         $group = db('auth_group_access')->alias('a')
             ->join('auth_group', 'a.group_id=auth_group.id', 'left')
             ->where(['uid'=>input('id')])->value('auth_group.title');
+
         $model = new AuthGroup();
         $res = $model->where('status', 1)->select();
         return view('admin/edit', compact('result', 'title', 'res', 'group'));

@@ -1,10 +1,23 @@
-ThinkPHP 5.0 && Layui && 后台权限控制
+ThinkPHP 5.0  后台权限控制
 ===============
 
-在项目根目录执行：composer update
+前端框架采用Layui为模板
+
+<code>
+git clone https://github.com/mazetao/thinkphp5_RBAC.git rbac
+</code>
+
+<code>
+cd rbac
+</code>
+
+<code>
+composer install
+</code>
+
+
+## 登录路由 http://rbac.com/login/index.html
 
 后台账号：admin
 密码：123123
-
-ThinkPHP5在保持快速开发和大道至简的核心理念不变的同时，PHP版本要求提升到5.4，对已有的CBD模式做了更深的强化，优化核心，减少依赖，基于全新的架构思想和命名空间实现.
 
